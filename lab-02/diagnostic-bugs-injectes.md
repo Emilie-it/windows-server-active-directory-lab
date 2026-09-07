@@ -67,7 +67,7 @@ Réflexe général : penser à la couche réseau avant la couche applicative fac
 
 
 
-## Bug 03 — Relation d'approbation rompue
+## Bug 03 : Relation d'approbation rompue
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
