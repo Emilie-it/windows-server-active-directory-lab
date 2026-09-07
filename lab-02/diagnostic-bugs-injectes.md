@@ -34,6 +34,8 @@ Autre point à retenir, indépendant de la méthode de diagnostic : positionner 
 
 Enfin, une politique de notification avant expiration (ou au minimum un contrôle régulier des dates à venir) aurait évité l'incident plutôt que de le corriger après coup.
 
+
+
 ## Bug 02 : Problème de DNS
 
 ### Contexte
@@ -62,3 +64,31 @@ Connexion testée avec succès depuis la page d'authentification d'utilisateur2,
 ### Ce que j'en retiens
 Un test de connexion réussi avec un autre compte ne prouve pas l'absence de problème réseau si ce compte s'est déjà authentifié avant sur le même poste — les identifiants mis en cache masquent un DNS cassé. Pour un test fiable d'accès réseau, utiliser un compte qui ne s'est jamais connecté sur ce poste, ou vérifier directement la couche réseau (ping, `ipconfig /all`) avant de conclure à partir d'un test de connexion.
 Réflexe général : penser à la couche réseau avant la couche applicative face à un problème d'authentification.
+
+
+
+## Bug 03 — Relation d'approbation rompue
+
+### Contexte
+Poste client PC1 (Windows 11), joint au domaine asso.lab.
+Page d'authentification de l'utilisateur3 : identifiant et mot de passe corrects renseignés.
+
+### Symptôme
+Blocage de la connexion avec le message : « La relation d'approbation entre cette station de travail et le domaine principal a échoué. »
+
+### Diagnostic
+**Hypothèse 1** — Vérifier une éventuelle relation de confiance rompue entre domaines/forêts via « Domaines et approbations Active Directory ». Rien de significatif trouvé.
+Piste écartée à raison, mais pour la mauvaise interprétation au départ : cet outil gère les approbations **entre domaines/forêts**, pas le lien de confiance entre **un poste et son domaine** (appelé canal sécurisé). Le message d'erreur, malgré son vocabulaire proche, concernait ce second mécanisme, hors du périmètre de cet outil.
+
+**Hypothèse 2** — Vérification des propriétés du compte utilisateur3. Rien d'anormal trouvé.
+
+**Recherche documentaire** — Message d'erreur recherché en ligne. Source consultée : [IT-Connect — Comment corriger l'erreur de relation d'approbation](https://www.it-connect.fr/windows-comment-corriger-erreur-de-relation-approbation-voici-plusieurs-methodes/).
+
+### Correction
+Connexion avec le compte administrateur local. Poste PC1 sorti du domaine, puis réinséré (Système → Membre d'un groupe de travail, appliqué, puis remis sur le domaine).
+Cause : lien de confiance (canal sécurisé) rompu entre PC1 et le contrôleur de domaine.
+
+### Ce que j'en retiens
+Distinguer clairement deux notions qui portent le même nom en français : la relation d'approbation **entre domaines/forêts** (outil dédié, sans lien avec ce cas), et le **canal sécurisé** entre un poste et son domaine (la vraie cause ici) — une confusion de vocabulaire qui a coûté du temps de diagnostic.
+Méthode alternative plus rapide pour la prochaine fois, sans sortir le poste du domaine : `Test-ComputerSecureChannel -Repair`, qui répare directement ce lien en une commande.
+La veille documentaire ciblée (chercher le message d'erreur exact) a permis de débloquer la situation efficacement — un réflexe à garder, pas à percevoir comme un aveu de faiblesse.
