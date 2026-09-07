@@ -30,6 +30,29 @@ Vérification post-promotion :
 
 Voir : `diagnostic-dc-promotion.md`
 
+### Organisation Active Directory
+
+Création d'une OU parente :
+
+`Asso1`
+
+Puis de trois OU correspondant aux différents services :
+
+- Direction
+- Secrétariat
+- TSociaux
+
+Utilisateurs fictifs créés :
+
+- Amine Adad (OU Direction)
+- Berengere Bertrand (OU TSociaux)
+- Vanessa Demouy (OU TSociaux)
+
+### Incidents documentés
+
+- Résolution DNS erronée (loopback) et échecs `dcdiag` initiaux : voir `diagnostic-dc-promotion.md`
+- Bugs injectés par un tiers, testant la résolution d'incidents utilisateur courants : voir `diagnostic-bugs-injectes.md`
+
 ### Jonction du poste client (PC1)
 
 Avant la jonction, blocage de l'installation de Windows 11 par mémoire insuffisante (2048 Mo, minimum 4 Go requis) — corrigé par une allocation de 4646 Mo.
