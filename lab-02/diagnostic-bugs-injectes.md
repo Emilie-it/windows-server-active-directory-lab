@@ -1,0 +1,35 @@
+# Bug 01 : Compte expiré puis vérouillé
+
+### Contexte
+Poste client PC14 (Windows11), joint au domaine asso.lab.
+Utilisateur test (noms fictifs): Amine Adad (OU Direction).
+Tentative de connexion avec identifiant et mot de passe corrects.
+
+### Symptôme 1
+Message d'erreur à l'ouverture de session : "votre compte est expiré ».
+
+### Diagnostic 1
+Vérification dans Utilisateurs et ordinateurs Active Directory → propriétés de l'utilisateur → onglet Compte.
+Constat : la date d'expiration du compte est fixée à aujourd'hui.
+
+### Correction 1
+Date d'expiration repositionnée sur « jamais ».
+Nouvelle tentative de connexion avec le même identifiant et mot de passe.
+
+### Symptôme 2
+Message d'erreur : « ce compte est verrouillé ».
+
+### Diagnostic 2
+Retour dans les propriétés du compte, onglet Compte : la case « Le compte est verrouillé » est cochée.
+
+### Correction 2
+Case décochée pour déverrouiller le compte.
+Connexion testée à nouveau et réussie.
+
+### Ce que j'en retiens
+Les deux symptômes ont été découverts l'un après l'autre, ce qui a doublé le temps de diagnostic. Une seule commande aurait affiché les deux états en même temps :
+Get-ADUser -Identity aadad -Properties LockedOut, AccountExpirationDate, Enabled | Select LockedOut, AccountExpirationDate, Enabled
+
+Autre point à retenir, indépendant de la méthode de diagnostic : positionner l'expiration sur « jamais » résout le lab, mais ce n'est pas une bonne pratique en production — un compte sans date d'expiration reste une surface d'attaque ouverte indéfiniment. Dans un vrai contexte, la bonne réponse aurait été de fixer une nouvelle date d'expiration cohérente avec une politique de renouvellement, pas de supprimer la contrainte.
+
+Enfin, une politique de notification avant expiration (ou au minimum un contrôle régulier des dates à venir) aurait évité l'incident plutôt que de le corriger après coup.
