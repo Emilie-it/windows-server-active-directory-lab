@@ -1,4 +1,8 @@
-# Bug 01 : Compte expiré puis verrouillé
+# Bugs injectés — Diagnostic d'incidents utilisateur
+
+Quatre incidents créés par un tiers sur PC1, résolus un par un. Documentation reconstruite de mémoire, non capturée en temps réel.
+
+## Bug 01 : Compte expiré puis verrouillé
 
 ### Contexte
 Poste client PC1 (Windows11), joint au domaine asso.lab.
@@ -36,7 +40,7 @@ Enfin, une politique de notification avant expiration (ou au minimum un contrôl
 
 
 
-# Bug 02 : Problème de DNS
+## Bug 02 : Problème de DNS
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
@@ -67,7 +71,7 @@ Réflexe général : penser à la couche réseau avant la couche applicative fac
 
 
 
-# Bug 03 : Relation d'approbation rompue
+## Bug 03 : Relation d'approbation rompue
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
@@ -95,8 +99,7 @@ La veille documentaire ciblée (chercher le message d'erreur exact) a permis de 
 
 
 
-
-# Bug 04 — Problème de chargement du profil utilisateur
+## Bug 04 — Problème de chargement du profil utilisateur
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
