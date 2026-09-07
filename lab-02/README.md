@@ -48,6 +48,8 @@ Utilisateurs fictifs créés :
 - Berengere Bertrand (OU TSociaux)
 - Vanessa Demouy (OU TSociaux)
 
+- *Utilisateurs et identifiants fictifs, créés uniquement à des fins de démonstration technique. Aucune donnée réelle n'est utilisée dans ce lab.*
+
 ### Incidents documentés
 
 - Résolution DNS erronée (loopback) et échecs `dcdiag` initiaux : voir `diagnostic-dc-promotion.md`
