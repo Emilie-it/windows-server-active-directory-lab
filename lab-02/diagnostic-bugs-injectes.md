@@ -34,7 +34,7 @@ Autre point à retenir, indépendant de la méthode de diagnostic : positionner 
 
 Enfin, une politique de notification avant expiration (ou au minimum un contrôle régulier des dates à venir) aurait évité l'incident plutôt que de le corriger après coup.
 
-## Bug 02 — Problème de DNS
+## Bug 02 : Problème de DNS
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
@@ -62,3 +62,4 @@ Connexion testée avec succès depuis la page d'authentification d'utilisateur2,
 ### Ce que j'en retiens
 Un test de connexion réussi avec un autre compte ne prouve pas l'absence de problème réseau si ce compte s'est déjà authentifié avant sur le même poste — les identifiants mis en cache masquent un DNS cassé. Pour un test fiable d'accès réseau, utiliser un compte qui ne s'est jamais connecté sur ce poste, ou vérifier directement la couche réseau (ping, `ipconfig /all`) avant de conclure à partir d'un test de connexion.
 Réflexe général : penser à la couche réseau avant la couche applicative face à un problème d'authentification.
+Re
