@@ -1,7 +1,7 @@
-# Bug 01 : Compte expiré puis vérouillé
+# Bug 01 : Compte expiré puis verrouillé
 
 ### Contexte
-Poste client PC14 (Windows11), joint au domaine asso.lab.
+Poste client PC1 (Windows11), joint au domaine asso.lab.
 Utilisateur test (noms fictifs): Amine Adad (OU Direction).
 Tentative de connexion avec identifiant et mot de passe corrects.
 
@@ -36,7 +36,7 @@ Enfin, une politique de notification avant expiration (ou au minimum un contrôl
 
 
 
-## Bug 02 : Problème de DNS
+# Bug 02 : Problème de DNS
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
@@ -67,7 +67,7 @@ Réflexe général : penser à la couche réseau avant la couche applicative fac
 
 
 
-## Bug 03 : Relation d'approbation rompue
+# Bug 03 : Relation d'approbation rompue
 
 ### Contexte
 Poste client PC1 (Windows 11), joint au domaine asso.lab.
@@ -92,3 +92,32 @@ Cause : lien de confiance (canal sécurisé) rompu entre PC1 et le contrôleur d
 Distinguer clairement deux notions qui portent le même nom en français : la relation d'approbation **entre domaines/forêts** (outil dédié, sans lien avec ce cas), et le **canal sécurisé** entre un poste et son domaine (la vraie cause ici) — une confusion de vocabulaire qui a coûté du temps de diagnostic.
 Méthode alternative plus rapide pour la prochaine fois, sans sortir le poste du domaine : `Test-ComputerSecureChannel -Repair`, qui répare directement ce lien en une commande.
 La veille documentaire ciblée (chercher le message d'erreur exact) a permis de débloquer la situation efficacement — un réflexe à garder, pas à percevoir comme un aveu de faiblesse.
+
+
+
+
+# Bug 04 — Problème de chargement du profil utilisateur
+
+### Contexte
+Poste client PC1 (Windows 11), joint au domaine asso.lab.
+Authentification de l'utilisateur berengere.bertrand (OU TSociaux) réussie (identifiant + mot de passe corrects).
+
+### Symptôme
+Message d'erreur au démarrage de la session : « Nous ne pouvons pas nous connecter à votre compte ».
+
+### Diagnostic
+Recherche documentaire sur le message d'erreur exact. Source consultée : [Malekal — Nous ne pouvons pas nous connecter à votre compte](https://www.malekal.com/windows-10-nous-ne-pouvons-pas-nous-connecter-a-votre-compte/).
+
+Procédure suivie :
+- Vérification de l'ouverture avec un profil temporaire (message d'avertissement habituel sur le bureau) : absent.
+- Vérification des profils existants dans `C:\Users`, recherche d'un dossier temporaire : aucun trouvé.
+- Vérification du nom exact du dossier de profil : `bertrandberengere.mod` — suffixe anormal identifié.
+
+### Correction
+Suppression du suffixe `.mod` sur le nom du dossier de profil.
+Redémarrage du poste, authentification réussie, session utilisable sans message d'erreur.
+Vérification finale sur `C:\Users` : nom de dossier conforme.
+
+### Ce que j'en retiens
+Le renommage du dossier a suffi ici, mais ce n'est pas la garantie générale : Windows associe un profil à un utilisateur via le registre (`ProfileList`, chemin `ProfileImagePath` lié au SID), pas seulement par le nom du dossier. Si un renommage seul ne résout pas un incident similaire à l'avenir, vérifier et corriger cette clé de registre est l'étape suivante.
+La documentation technique ciblée (rechercher le message d'erreur exact plutôt que deviner) reste le réflexe le plus efficace face à un symptôme inconnu.
