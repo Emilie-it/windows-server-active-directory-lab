@@ -68,3 +68,18 @@ Travaux réalisés :
 - résolution de quatre incidents utilisateurs injectés (compte expiré/verrouillé, DNS, relation d'approbation, profil utilisateur).
 
 Détail complet : [lab-02/00-README.md](lab-02/00-README.md)
+
+## Lab 03 — Gestion centralisée des administrateurs locaux par GPO
+
+**Domaine :** `asso.lab`
+
+Travaux réalisés :
+
+- création d'un groupe de sécurité dédié aux administrateurs locaux ;
+- création et liaison d'une GPO à l'OU `asso1` ;
+- ajout du groupe Active Directory au groupe local `Administrateurs` des postes concernés ;
+- diagnostic d'une GPO incomplètement configurée et d'un poste situé hors de son périmètre ;
+- identification et suppression d'une référence SID obsolète après recréation d'un groupe AD ;
+- vérification de l'application avec `gpupdate` et `net localgroup`.
+
+Détail complet : [lab-03-active-directory-gpo-admins-locaux/README.md](lab-03-active-directory-gpo-admins-locaux/README.md)
