@@ -80,7 +80,7 @@ Ce groupe permet de regrouper les utilisateurs auxquels doivent être attribués
 
 L'étendue du groupe a été corrigée au cours du dépannage pour devenir **Domaine local**.
 
-![Groupe de sécurité Active Directory](images/01-groupe-ad-domaine-local.png)
+![Groupe de sécurité GG_AdminsLocauxPC avec une étendue Domaine local](./images/01-groupe-ad-domaine-local.png)
 
 ---
 
@@ -127,7 +127,7 @@ Le groupe `ASSO\GG_AdminsLocauxPC` n'apparaissait pas parmi les membres du group
 
 Le résultat attendu n'était donc pas obtenu sur `PC1`.
 
-![Échec initial de la vérification](images/02-echec-groupe-administrateurs.png)
+![Premier test : GG_AdminsLocauxPC absent du groupe Administrateurs](./images/02-echec-groupe-administrateurs.png)
 
 ---
 
@@ -214,7 +214,7 @@ Après révision de la configuration, je l'ai supprimé puis recréé avec une �
 
 Après cette recréation, une entrée sous forme de SID non résolu est apparue dans le filtrage de sécurité de la GPO.
 
-![SID obsolète dans la GPO](images/03-sid-obsolete-gpo.png)
+![SID obsolète présent dans le filtrage de sécurité de la GPO](./images/03-sid-obsolete-gpo.png)
 
 Pour identifier l'origine de cette entrée, j'ai vérifié le SID du groupe actuellement présent dans Active Directory avec PowerShell :
 
@@ -224,7 +224,7 @@ Get-ADGroup "GG_AdminsLocauxPC" -Properties SID | Select-Object Name, SID
 
 Le SID du groupe recréé était différent de celui encore référencé dans la GPO.
 
-![Vérification du SID du groupe](images/04-verification-sid-groupe.png)
+![Vérification du nouveau SID de GG_AdminsLocauxPC avec PowerShell](./images/04-verification-sid-groupe.png)
 
 La suppression puis la recréation d'un objet Active Directory avec le même nom ne recrée donc pas le même objet de sécurité : un nouveau SID lui est attribué.
 
@@ -242,13 +242,9 @@ gpupdate /force
 
 Puis j'ai vérifié à nouveau les membres du groupe local `Administrateurs`.
 
-Une première vérification graphique dans la gestion de l'ordinateur montre désormais le groupe :
+Une première vérification graphique dans la gestion de l'ordinateur montre désormais le groupe `ASSO\GG_AdminsLocauxPC` comme membre du groupe local `Administrateurs`.
 
-`ASSO\GG_AdminsLocauxPC`
-
-comme membre du groupe local `Administrateurs`.
-
-![Vérification graphique du groupe Administrateurs](images/05-groupe-local-administrateurs.png)
+![GG_AdminsLocauxPC présent dans le groupe local Administrateurs](./images/05-groupe-local-administrateurs.png)
 
 J'ai ensuite confirmé le résultat en ligne de commande :
 
@@ -258,7 +254,7 @@ net localgroup Administrateurs
 
 Le groupe `ASSO\GG_AdminsLocauxPC` apparaît désormais parmi les membres.
 
-![Vérification finale avec net localgroup](images/06-verification-finale-net-localgroup.png)
+![Vérification finale du groupe Administrateurs avec net localgroup](./images/06-verification-finale-net-localgroup.png)
 
 Le résultat attendu est donc obtenu.
 
@@ -281,10 +277,11 @@ GG_AdminsLocauxPC
 GPO
        │
        ▼
-Administrateurs local des postes
+Groupe local Administrateurs
+sur les postes concernés
        │
        ▼
-droits administrateur local
+Droits d'administrateur local
 ```
 
 Il n'est donc plus nécessaire d'ajouter individuellement chaque utilisateur au groupe local `Administrateurs` de chaque poste.
@@ -303,5 +300,4 @@ Il n'est donc plus nécessaire d'ajouter individuellement chaque utilisateur au 
 
 ## Ressources
 
-- IT-Connect — GPO : définir un utilisateur administrateur local sur les postes Windows  
-  https://www.it-connect.fr/gpo-definir-un-utilisateur-administrateur-local-de-tous-les-pcs/
+- [IT-Connect — GPO : définir un utilisateur administrateur local sur les postes Windows](https://www.it-connect.fr/gpo-definir-un-utilisateur-administrateur-local-de-tous-les-pcs/)
